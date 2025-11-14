@@ -75,13 +75,30 @@ void showMatriz(int matriz[4][4]){
     }
 }
 
+int RetangMax(int matriz[4][4], vector<int> memo, int i, int j){
+    if(memo[i] != -1)
+       return memo[i];
+
+    //caso base(O próprio valor)
+    int cont = 0;
+    for(int x = 0; x < 4; x++){
+        for(int y = 0;  y<4; y++){
+            memo.push_back(matriz[x][y]);
+            cont++;
+        }
+    }
+
+    return memo[cont];
+} 
+
 int main() {
+    vector<int> memo;
+
     int matrizTeste[4][4] = {{0, 0, 1, 0},
                         {9, 2, -6, 2},
                         {-3, 2, -4, 1},
                         {-2, 6, 0, -3}};
     showMatriz(matrizTeste);
-
     return 0;
 }
 
