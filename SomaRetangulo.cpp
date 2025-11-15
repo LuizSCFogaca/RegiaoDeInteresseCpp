@@ -7,64 +7,9 @@
 
 #include <iostream>
 #include <vector>
-#include <random> // cuida do gerador de numeros
-#include <iomanip> //só pra formatar output
+
 
 using namespace std;
-
-/*vector<vector<int>> criarMatriz(int linhas, int colunas, mt19937& gen, uniform_int_distribution<>& distrib) {
-    
-    vector<vector<int>> novaMatriz(linhas, vector<int>(colunas, -1));
-    
-    for (int i = 0; i < linhas; i++) {
-        for (int j = 0; j < colunas; j++) {
-            novaMatriz[i][j] = distrib(gen);
-        }
-    }
-
-    return novaMatriz;
-}
-*/
-
-/*void printaMatriz(const vector<vector<int>>& matriz) {
-//lembrete: Posiçoes Começam no 0
-    
-    for (const auto& linha : matriz) {
-        
-        for (int valor : linha) {
-            
-            cout << setw(4) << valor << " ";
-            
-        }
-        cout << endl;
-    }
-}
-*/
-
-
- /*
-    random_device rd;
-    mt19937 gen(rd());
-    
-    int min = -127;
-    int max = 127;
-    
-    int num;
-    
-    uniform_int_distribution<> distrib(min, max);
-    
-    
-    cout << "Informe a base da matriz: \nExemplo 4 -> 4x4" << endl;
-    cin >> num;
-
-    vector<vector<int>> matriz = criarMatriz(num, num, gen, distrib);
-    cout << endl;
-    
-    printaMatriz(matriz);
-    
-    */
-
-
 
 void showMatriz(int matriz[4][4]){
     for(int i = 0; i<4; i++){
@@ -75,20 +20,40 @@ void showMatriz(int matriz[4][4]){
     }
 }
 
-int RetangMax(int matriz[4][4], vector<int> memo, int i, int j){
-    if(memo[i] != -1)
-       return memo[i];
-
+int retangMax(int matriz[4][4], vector<int>& memo){
     //caso base(O próprio valor)
-    int cont = 0;
     for(int x = 0; x < 4; x++){
         for(int y = 0;  y<4; y++){
             memo.push_back(matriz[x][y]);
-            cont++;
         }
     }
 
-    return memo[cont];
+    //primeiros pares horizontal
+    for(int i = 0; i < 4; i++){
+        for(int j =0; j < 3; j++){
+            int somaDupla = matriz[i][j] + matriz[i][j+1];
+            memo.push_back(somaDupla);
+            cout<<somaDupla<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<"=============================="<<endl;
+    //Segundos pares vertical
+    for(int i = 0; i < 3; i++){
+        for(int j =0; j < 4; j++){
+            int somaDupla = matriz[i][j] + matriz[i+1][j];
+            memo.push_back(somaDupla);
+            cout<<somaDupla<<" ";
+        }
+        cout<<endl;
+    }
+    int maxValue = memo[0];
+    for(int i = 0; i < memo.size(); i++){
+        if(maxValue < memo[i])
+            maxValue = memo[i];
+    }
+
+    return maxValue;
 } 
 
 int main() {
@@ -99,6 +64,9 @@ int main() {
                         {-3, 2, -4, 1},
                         {-2, 6, 0, -3}};
     showMatriz(matrizTeste);
+    cout<<"=============================="<<endl;
+    int max = retangMax(matrizTeste, memo);
+    cout<<"=============================="<<endl<<"Max Value: "<<max<<endl;
     return 0;
 }
 
