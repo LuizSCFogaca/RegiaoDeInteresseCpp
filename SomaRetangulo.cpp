@@ -28,7 +28,7 @@ int retangMax(int matriz[4][4], vector<int>& memo){
         }
     }
 
-    //primeiros pares horizontal
+    //primeiros pares horizontal 1x2
     for(int i = 0; i < 4; i++){
         for(int j =0; j < 3; j++){
             int somaDupla = matriz[i][j] + matriz[i][j+1];
@@ -38,7 +38,7 @@ int retangMax(int matriz[4][4], vector<int>& memo){
         cout<<endl;
     }
     cout<<"=============================="<<endl;
-    //Segundos pares vertical
+    //Segundos pares vertical 2x1
     for(int i = 0; i < 3; i++){
         for(int j =0; j < 4; j++){
             int somaDupla = matriz[i][j] + matriz[i+1][j];
@@ -47,6 +47,34 @@ int retangMax(int matriz[4][4], vector<int>& memo){
         }
         cout<<endl;
     }
+
+    //2x2
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            int soma =
+                matriz[i][j]     + matriz[i][j+1] +
+                matriz[i+1][j]   + matriz[i+1][j+1];
+
+            memo.push_back(soma);
+        }
+    }
+    
+    //1x3
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 2; j++){
+            int soma = matriz[i][j] + matriz[i][j+1] + matriz[i][j+2];
+            memo.push_back(soma);
+        }
+    }
+
+    //3x1
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; j < 4; j++){
+            int soma = matriz[i][j] + matriz[i+1][j] + matriz[i+2][j];
+            memo.push_back(soma);
+        }
+    }
+
     int maxValue = memo[0];
     for(int i = 0; i < memo.size(); i++){
         if(maxValue < memo[i])
