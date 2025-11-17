@@ -20,68 +20,20 @@ void showMatriz(int matriz[4][4]){
     }
 }
 
-int retangMax(int matriz[4][4], vector<int>& memo){
-    //caso base(O próprio valor)
-    for(int x = 0; x < 4; x++){
-        for(int y = 0;  y<4; y++){
-            memo.push_back(matriz[x][y]);
-        }
-    }
+int retangMax(int matriz[][], vector<int>& memo, int N){
+    memo.push_back(matriz[0][0]);
+    for(int linhaT = 0; linhaT < N; linhaT++){
+        for(int colunaE = 0; colunaE < N; colunaE++){
+            int retAtual= matriz[linhaT][colunaE];
+            memo.push_back(retAtual);
+            bool aumentou = true;
+            while(aumentou){
+                aumentou = false;
 
-    //primeiros pares horizontal 1x2
-    for(int i = 0; i < 4; i++){
-        for(int j =0; j < 3; j++){
-            int somaDupla = matriz[i][j] + matriz[i][j+1];
-            memo.push_back(somaDupla);
-            cout<<somaDupla<<" ";
-        }
-        cout<<endl;
+                if()
+            }
+        }    
     }
-    cout<<"=============================="<<endl;
-    //Segundos pares vertical 2x1
-    for(int i = 0; i < 3; i++){
-        for(int j =0; j < 4; j++){
-            int somaDupla = matriz[i][j] + matriz[i+1][j];
-            memo.push_back(somaDupla);
-            cout<<somaDupla<<" ";
-        }
-        cout<<endl;
-    }
-
-    //2x2
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            int soma =
-                matriz[i][j]     + matriz[i][j+1] +
-                matriz[i+1][j]   + matriz[i+1][j+1];
-
-            memo.push_back(soma);
-        }
-    }
-    
-    //1x3
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 2; j++){
-            int soma = matriz[i][j] + matriz[i][j+1] + matriz[i][j+2];
-            memo.push_back(soma);
-        }
-    }
-
-    //3x1
-    for(int i = 0; i < 2; i++){
-        for(int j = 0; j < 4; j++){
-            int soma = matriz[i][j] + matriz[i+1][j] + matriz[i+2][j];
-            memo.push_back(soma);
-        }
-    }
-
-    int maxValue = memo[0];
-    for(int i = 0; i < memo.size(); i++){
-        if(maxValue < memo[i])
-            maxValue = memo[i];
-    }
-
-    return maxValue;
 } 
 
 int main() {
@@ -93,7 +45,7 @@ int main() {
                         {-2, 6, 0, -3}};
     showMatriz(matrizTeste);
     cout<<"=============================="<<endl;
-    int max = retangMax(matrizTeste, memo);
+    int max = retangMax(matrizTeste, memo, 4);
     cout<<"=============================="<<endl<<"Max Value: "<<max<<endl;
     return 0;
 }
