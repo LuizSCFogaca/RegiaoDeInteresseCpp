@@ -7,46 +7,87 @@
 
 #include <iostream>
 #include <vector>
-
+#include <chrono>
+#include <random> // cuida do gerador de numeros
+#include <iomanip> //só pra formatar output
 
 using namespace std;
 
-void showMatriz(int matriz[4][4]){
-    for(int i = 0; i<4; i++){
-        for(int j = 0; j < 4; j++){
+vector<vector<int>> criarMatriz(int linhas, int colunas, mt19937& gen, uniform_int_distribution<>& distrib) {
+    
+    vector<vector<int>> novaMatriz(linhas, vector<int>(colunas, -1));
+    
+    for (int i = 0; i < linhas; i++) {
+        for (int j = 0; j < colunas; j++) {
+            novaMatriz[i][j] = distrib(gen);
+        }
+    }
+
+    return novaMatriz;
+}
+
+void showMatriz(vector<vector<int>> matriz, int N){
+    for(int i = 0; i<N; i++){
+        for(int j = 0; j<N; j++){
             cout<<matriz[i][j]<< " ";
         }
         cout<<endl;
     }
 }
 
-int retangMax(int matriz[][], vector<int>& memo, int N){
-    memo.push_back(matriz[0][0]);
+int retangMax(const vector<vector<int>>& matriz, vector<int>& memo, int N){
+    int maxAtual = INT_MIN;
     for(int linhaT = 0; linhaT < N; linhaT++){
         for(int colunaE = 0; colunaE < N; colunaE++){
-            int retAtual= matriz[linhaT][colunaE];
-            memo.push_back(retAtual);
-            bool aumentou = true;
-            while(aumentou){
-                aumentou = false;
-
-                if()
+            for(int linhaB = linhaT; linhaB < N; linhaB++){
+                for(int colunaD = colunaE; colunaD < N; colunaD++){
+                    int soma = 0;
+                    for(int i = linhaT; i <= linhaB; i++){
+                        for(int j = colunaE; j <= colunaD; j++){
+                            soma += matriz[i][j];
+                        }
+                    }
+                    memo.push_back(soma);
+                    if(soma > maxAtual){
+                        maxAtual = soma;
+                    }
+                }     
             }
         }    
     }
+    return maxAtual;
 } 
 
 int main() {
-    vector<int> memo;
+    auto start = chrono::steady_clock::now();
+    random_device rd;
+    mt19937 gen(rd());
 
-    int matrizTeste[4][4] = {{0, 0, 1, 0},
-                        {9, 2, -6, 2},
-                        {-3, 2, -4, 1},
-                        {-2, 6, 0, -3}};
-    showMatriz(matrizTeste);
-    cout<<"=============================="<<endl;
-    int max = retangMax(matrizTeste, memo, 4);
-    cout<<"=============================="<<endl<<"Max Value: "<<max<<endl;
+    int minimo = -127;
+    int maximo = 127;
+    uniform_int_distribution<> distrib(minimo, maximo);
+
+    int num;
+    vector<int> memo;
+    cout << "Informe a base da matriz (ex: 4 -> matriz 4x4): ";
+    cin >> num;
+
+    vector<vector<int>> matriz = criarMatriz(num, num, gen, distrib);
+
+    showMatriz(matriz, num);
+
+    int maxRet = retangMax(matriz, memo, num);
+
+    cout << "==============================\n"
+         << "Max Value: " << maxRet << endl;
+
+    auto end = chrono::steady_clock::now();
+    auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+    cout << "Tempo de execucao: " << duration.count() << " ms" << endl;
+
+    chrono::duration<double> elapsed = end - start;
+    cout << "Tempo de execucao: " << elapsed.count() << " s" << endl;
     return 0;
 }
 
